@@ -1,0 +1,14 @@
+# Local environment variables
+.env
+
+# Virtual environment
+.venv/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Output text files
+text/
