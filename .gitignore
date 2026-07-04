@@ -12,3 +12,5 @@ __pycache__/
 
 # Output text files
 text/
+# learning log
+temp_learning_log.md

@@ -2,6 +2,7 @@
 
 This repository contains interactive Python assistant tools, the main feature is its  local AI. we use this AI to do repetitive simple tasks instead of depending on cloud LLMs.
 
+
 ## Projects
 
 ### 1. LinkedIn Post Rewriter (`linkedin_rewriter.py`)
@@ -36,8 +37,8 @@ pip install -r requirements.txt
    ```
 2. Open `.env` and fill in your settings:
    * `OPENAI_API_KEY`: API key for your LLM provider (default: `lm-studio`).
-   * `OPENAI_BASE_URL`: Base URL of your local/remote server (default: `http://localhost:1234/v1`).
-   * `LLM_MODEL`: Model name to use (default: `qwen2.5-coder-7b-instruct`).
+   * `OPENAI_BASE_URL`: Base URL of your local/remote server (default: `http://localhost:1234`).
+   * `LLM_MODEL`: Model name to use.
 
 *(Note: `.env` is listed in `.gitignore` to ensure your personal details are never pushed to GitHub).*
 

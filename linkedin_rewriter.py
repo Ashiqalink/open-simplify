@@ -8,16 +8,25 @@ load_dotenv()
 
 api_key = os.getenv("OPENAI_API_KEY", "lm-studio")
 base_url = os.getenv("OPENAI_BASE_URL", "http://localhost:1234/v1")
-model_name = os.getenv("LLM_MODEL", "qwen2.5-coder-7b-instruct")
+model_name = os.getenv("LLM_MODEL", "qwen3.5-4b-chatmde-v1.0")
 
 client = OpenAI(
     api_key=api_key,
     base_url=base_url
 )
 
-# Ensure the 'text' directory exists
+# Dynamically fetch the loaded model from LM Studio if available
+try:
+    available_models = client.models.list()
+    if available_models.data:
+        model_name = available_models.data[0].id
+except Exception:
+    pass
+
+# Ensure the 'text' directory exists and set a single output file
 output_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "text")
 os.makedirs(output_dir, exist_ok=True)
+output_file = os.path.join(output_dir, "posts.txt")
 
 print("Professional LinkedIn Post Rewriter (type 'exit' or 'quit' to stop)\n")
 print(f"Using Model: {model_name}")
@@ -41,18 +50,22 @@ while True:
             ]
         )
         content = response.choices[0].message.content
+        if content:
+            import re
+            content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL).strip()
 
         print("\n--- LinkedIn Post Draft ---")
         print(content)
         print("----------------------------\n")
 
-        # Save to a text file in the 'text' folder
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"post_{timestamp}.txt"
-        filepath = os.path.join(output_dir, filename)
-        with open(filepath, "w", encoding="utf-8") as f:
+        # Append to a single posts.txt file with a heading
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        heading = f"\n--- Post [{timestamp}] ---\n"
+        with open(output_file, "a", encoding="utf-8") as f:
+            f.write(heading)
             f.write(content)
-        print(f"Saved draft to: text/{filename}\n")
+            f.write("\n")
+        print(f"Saved draft to: text/posts.txt\n")
 
     except Exception as e:
         print(f"Error: {e}\n")

@@ -2,7 +2,7 @@
 import litert_lm
 
 # Load the model
-engine = litert_lm.Engine("gemma-4-E2B-it.litertlm")
+engine = litert_lm.Engine("qwen3.5-4b-chatmde-v1.0.litertlm")
 
 # Create a conversation session
 with engine.create_conversation() as conversation:
@@ -14,4 +14,8 @@ with engine.create_conversation() as conversation:
         
         # Send message and print response
         response = conversation.send_message(user_input)
-        print(f"AI: {response['content'][0]['text']}")
+        text = response['content'][0]['text']
+        if text:
+            import re
+            text = re.sub(r'<think>.*?</think>', '', text, flags=re.DOTALL).strip()
+        print(f"AI: {text}")
