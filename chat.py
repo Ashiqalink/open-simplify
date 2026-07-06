@@ -1,8 +1,19 @@
 
+import glob
+import os
 import litert_lm
 
+# Auto-detect any available .litertlm model in the workspace
+litert_files = glob.glob("*.litertlm") + glob.glob("**/*.litertlm", recursive=True)
+if litert_files:
+    model_path = litert_files[0]
+    print(f"Auto-detected model: {model_path}")
+else:
+    model_path = "qwen2.5-coder-7b-instruct.litertlm"
+    print(f"No .litertlm files found. Falling back to: {model_path}")
+
 # Load the model
-engine = litert_lm.Engine("qwen3.5-4b-chatmde-v1.0.litertlm")
+engine = litert_lm.Engine(model_path)
 
 # Create a conversation session
 with engine.create_conversation() as conversation:

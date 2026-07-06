@@ -8,7 +8,7 @@ load_dotenv()
 
 api_key = os.getenv("OPENAI_API_KEY", "lm-studio")
 base_url = os.getenv("OPENAI_BASE_URL", "http://localhost:1234/v1")
-model_name = os.getenv("LLM_MODEL", "qwen3.5-4b-chatmde-v1.0")
+model_name = os.getenv("LLM_MODEL")
 
 client = OpenAI(
     api_key=api_key,
